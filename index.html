@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+body {
+background-image: url('https://gstatic.com'); 
+background-repeat: no-repeat;
+background-size: cover;
+background-position:center;
+background-attachment: fixed;
+   }
+
+    .navbar {
+      background-color: #fcba03;
+      padding: 15px 40px;
+      display: flex; flex-wrap:wrap;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #E6E4DC;
+    }
+    .logo-container {
+      font-weight: bold;
+      font-size: 20px;
+      color: #020302;
+      cursor: pointer;
+    }
+    .nav-links { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; justify-content: center; }
+    
+    .nav-btn {
+      background-color: #2e5cf2; 
+      color: #ffffff; 
+      padding: 8px 18px; 
+      border-radius: 20px; 
+      font-weight: 500; 
+      border: none; 
+      cursor: pointer;
+      font-size: 14px;
+      transition: background-color 0.2s;
+    }
+    .nav-btn:hover { background-color: #035efc; }
+
+    .user-greeting {
+      font-weight: 600;
+      font-size: 14px;
+      color: #1A3020;
+      background-color: #ffffff;
+      padding: 6px 14px;
+      border-radius: 15px;
+      border: 2px solid #2e5cf2;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .user-greeting:hover {
+      border-color: #f5b616;
+      background-color: #FFFDF0;
+    }
+
+    .container { max-width: 100%; margin: 0px auto; padding: 0 20px; text-align: left; }
+    h1 { font-size: 32px; font-weight: 600; margin: 0 0 8px 0; color: #1A3020; }
+    .subtitle { font-size: 16px; color: #555555; margin: 0 0 30px 0; }
+    
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+    
+    .modal-box {
+      background-color: #ffffff;
+      border: 4px solid transparent;
+      border-image: linear-gradient(to right, #2e5cf2 50%, #f5b616 50%) 1;
+      border-radius: 16px;
+      padding: 30px;
+      width: 100%;
+      max-width: 400px;
+      text-align: center;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    }
+    
+    .modal-title {
+      font-size: 22px;
+      font-weight: bold;
+      color: #2e5cf2;
+      margin: 0 0 5px 0;
+    }
+    .modal-subtitle {
+      font-size: 13px;
+      color: #f5b616;
+      font-weight: 600;
+      margin: 0 0 20px 0;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    
+    .modal-input {
+      width: 100%;
+      padding: 12px 15px;
+      font-size: 15px;
+      border: 2px solid #2e5cf2;
+      border-radius: 8px;
+      box-sizing: border-box;
+      margin-bottom: 12px;
+      margin-top: 5px;
+    }
+    .modal-input:focus {
+      outline: none;
+      border-color: #f5b616;
+    }
+    
+    .modal-btn {
+      background-color: #2e5cf2;
+      color: white;
+      border: 2px solid #f5b616;
+      padding: 12px 25px;
+      font-size: 15px;
+      font-weight: bold;
+      border-radius: 20px;
+      cursor: pointer;
+      width: 100%;
+      margin-top: 10px;
+      transition: background-color 0.2s;
+    }
+    .modal-btn:hover {
+      background-color: #1232b3;
+    }
+
+    .dropdown-cards {
+      margin-top: 20px;
+      display: flex;
+      gap: 15px;
+    }
+    .button-tile {
+      background: white;
+      border: 2px solid #2e5cf2;
+      border-radius: 12px;
+      padding: 15px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: all 0.2s;
+    }
+    .button-tile:hover {
+      border-color: #f5b616;
+      background-color: #FFFDF0;
+    }
+    .card-title {
+      display: block;
+      color: #2e5cf2;
+    }
+
+    .trending-section {
+      margin-top: 30px;
+      font-family: Arial, sans-serif;
+    }
+    .trending-container {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-top: 15px;
+    }
+    .trending-row {
+      background: #ffffff;
+      border: 2px solid #2e5cf2;
+      border-radius: 12px;
+      padding: 15px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.04);
+      transition: all 0.2s ease;
+    }
+    .trending-row:hover {
+      border-color: #f5b616;
+      background-color: #FFFDF0;
+      transform: translateY(-2px);
+    }
+    .item-meta {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .badge {
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: bold;
+      text-transform: uppercase;
+      color: #ffffff;
+    }
+    .badge.item { background-color: #2e5cf2; }
+    .badge.skill { background-color: #f5b616; color: #141414; }
+    .item-name {
+      font-size: 16px;
+      font-weight: 700;
+      color: #141414;
+    }
+    .views-indicator {
+      font-size: 14px;
+      font-weight: 600;
+      color: #555555;
+      background: #E6E4DC;
+      padding: 4px 12px;
+      border-radius: 8px;
+    }
+  </style>
+<title> CommunityForge Homepage </title>
+</head>
+<body>
+
+<div class="modal-overlay" id="loginModal" style="display: none;">
+  <div class="modal-box">
+    <div class="modal-title">CommunityForge Profile</div>
+    <div class="modal-subtitle">Setup Account Context</div>
+    <input type="text" id="loginUsername" class="modal-input" placeholder="Enter Name *Required">
+    <input type="email" id="loginEmail" class="modal-input" placeholder="Enter Email *Required one of the following">
+    <input type="tel" id="loginPhone" class="modal-input" placeholder="Enter Phone *Required one of the following">
+    <input type="text" id="loginZip" class="modal-input" placeholder="Enter Zip Code *Required">
+    <button class="modal-btn" onclick="submitLogin()">Save Profile</button>
+  </div>
+</div>
+
+<marquee style="font-size: 25px;"><b>Welcome to CommunityForge</b></marquee>
+
+<div class="navbar">
+    <div class="logo-container" onclick="navigatePage('index.html')" role="button" tabindex="0" style="cursor: pointer; font-size: 28px; font-weight: 800; letter-spacing: -0.5px;">
+CommunityForge
+</div>
+
+    <div class="nav-links">
+      <span id="navGreeting" class="user-greeting" style="display: none;" onclick="openProfileEdit()"></span>
+      <button class="nav-btn" onclick="navigatePage('tools.html')">Items</button>
+      <button class="nav-btn" onclick="navigatePage('skills.html')">Skill</button>
+      <button class="nav-btn" onclick="navigatePage('listing.html')">Listings</button> 
+    </div>
+</div>
+    
+<div class="dropdown-cards">
+  <button class="button-tile" onclick="navigatePage('informationpage.html')"><b class="card-title">About CommunityForge</b><span class="card-desc"></span></button>
+</div>
+
+<div class="trending-section">
+  <h3>Top 5 Most Viewed Items and Skills</h3>
+  <p class="subtitle">See what your neighbors are looking at the most right now. Click any entry to explore.</p>
+  
+  <div class="trending-container" id="trendingItemsContainer"></div>
+</div>
+
+<script>
+  function renderTopFive() {
+    const container = document.getElementById('trendingItemsContainer');
+    container.innerHTML = "";
+    
+    const currentListings = JSON.parse(localStorage.getItem('communityForgeListings')) || [];
+    
+    if (currentListings.length === 0) {
+      container.innerHTML = "<p style='color: #666666; font-size: 14px;'>No trending items found yet.</p>";
+      return;
+    }
+
+    const topFive = currentListings.sort((a, b) => (b.views || 0) - (a.views || 0)).slice(0, 5);
+
+    topFive.forEach(item => {
+      const row = document.createElement('div');
+      row.className = 'trending-row';
+      row.onclick = () => navigatePage('listing.html');
+      row.innerHTML = `
+        <div class="item-meta">
+          <span class="badge ${item.type ? item.type.toLowerCase() : 'item'}">${item.type || 'Item'}</span>
+          <span class="item-name">${item.name}</span>
+        </div>
+        <div class="views-indicator">${item.views || 0} views</div>
+      `;
+      container.appendChild(row);
+    });
+  }
+
+  function navigatePage(url) {
+    if (url) {
+      window.location.href = url;
+    }
+  }
+
+  function submitLogin() {
+    const username = document.getElementById('loginUsername').value;
+    const email = document.getElementById('loginEmail').value;
+    const phone = document.getElementById('loginPhone').value;
+    const zip = document.getElementById('loginZip').value;
+    
+    if (!username.trim()) {
+      alert("Please enter a name!");
+      return;
+    }
+
+    localStorage.setItem('savedUsername', username);
+    localStorage.setItem('savedEmail', email);
+    localStorage.setItem('savedPhone', phone);
+    localStorage.setItem('savedZip', zip);
+    
+    document.getElementById('loginModal').style.display = 'none';
+    document.getElementById('navGreeting').textContent = 'Hello, ' + username;
+    document.getElementById('navGreeting').style.display = 'inline-block';
+  }
+
+  function openProfileEdit() {
+    document.getElementById('loginUsername').value = localStorage.getItem('savedUsername') || '';
+    document.getElementById('loginEmail').value = localStorage.getItem('savedEmail') || '';
+    document.getElementById('loginPhone').value = localStorage.getItem('savedPhone') || '';
+    document.getElementById('loginZip').value = localStorage.getItem('savedZip') || '';
+    document.getElementById('loginModal').style.display = 'flex';
+  }
+
+  window.onload = function() {
+    const savedName = localStorage.getItem('savedUsername');
+    if (savedName) {
+      document.getElementById('navGreeting').textContent = 'Hello, ' + savedName;
+      document.getElementById('navGreeting').style.display = 'inline-block';
+    } else {
+      document.getElementById('loginModal').style.display = 'flex';
+    }
+    renderTopFive();
+  };
+</script>
+</body>
+</html>

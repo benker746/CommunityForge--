@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+    body {
+      background-color: #FAF8F5;
+      margin: 0; padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      color: #333333;
+    }
+    .navbar {
+      background-color: #f5b616;
+      padding: 15px 40px;
+      display: flex; justify-content: space-between; align-items: center;
+      border-bottom: 2px solid #2e5cf2;
+    }
+    .logo-container { font-weight: bold; font-size: 20px; color: #1A3020; cursor: pointer; }
+    .nav-links { display: flex; align-items: center; gap: 12px; }
+    .nav-btn {
+      background-color: #2e5cf2; color: #ffffff; padding: 8px 18px; 
+      border-radius: 20px; font-weight: 500; border: none; cursor: pointer;
+      font-size: 14px; transition: background-color 0.2s;
+    }
+    .nav-btn:hover { background-color: #1232b3; }
+
+    .user-greeting {
+      font-weight: 600; font-size: 14px; color: #1A3020; background-color: #ffffff;
+      padding: 6px 14px; border-radius: 15px; border: 2px solid #2e5cf2; cursor: pointer;
+    }
+    .layout-wrapper { display: flex; gap: 20px; padding: 20px; max-width: 100%; box-sizing: border-box; }
+    .sidebar { width: 280px; flex-shrink: 0; background: #ffffff; border: 2px solid #fcba03; border-radius: 12px; padding: 20px; height: fit-content; }
+    .main-content { flex-grow: 1; text-align: left; }
+    h1 { font-size: 32px; font-weight: 600; margin: 0 0 8px 0; color: #1A3020; }
+    .subtitle { font-size: 16px; color: #555555; margin: 0 0 20px 0; }
+    
+    .search-input-box {
+      width: 100%; max-width: 400px; padding: 10px 15px; font-size: 15px;
+      border: 2px solid #2e5cf2; border-radius: 8px; box-sizing: border-box; margin-bottom: 20px;
+    }
+    .tool-list { display: grid; grid-template-columns: 1fr; gap: 15px; }
+    
+    .tool-card { background-color: #FFFDF0; border: 2px solid #2e5cf2; border-radius: 12px; padding: 20px; display: flex; justify-content: space-between; align-items: center; position: relative; }
+    .tool-info { flex-grow: 1; }
+    .tool-info h3 { margin: 0 0 5px 0; font-size: 18px; color: #2e5cf2; display: flex; align-items: center; gap: 10px; }
+    .tool-info p { margin: 0 0 8px 0; font-size: 14px; color: #666666; }
+    .contact-details { font-size: 12px; color: #555555; line-height: 1.4; border-top: 1px dashed #CDD1C7; padding-top: 8px; margin-top: 8px; }
+    .tool-type { font-weight: bold; text-transform: uppercase; font-size: 11px; color: #f5b616; background: #1A3020; padding: 2px 8px; border-radius: 4px; display: inline-block; margin-bottom: 6px; }
+
+    .heart-icon { font-size: 14px; cursor: pointer; user-select: none; transition: transform 0.1s ease; border: 1px solid #2e5cf2; padding: 2px 6px; border-radius: 4px; background: #ffffff; }
+    .heart-icon:hover { transform: scale(1.1); }
+    .fav-sidebar-item { font-size: 14px; padding: 8px; background: #FFFDF0; border: 1px solid #2e5cf2; border-radius: 6px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; }
+
+    .delete-btn { background-color: #f5b616; color: #1A3020; border: 1px solid #2e5cf2; padding: 8px 16px; border-radius: 20px; cursor: pointer; font-size: 13px; font-weight: bold; margin-left: 15px; }
+    .action-links { display: flex; gap: 15px; margin-top: 30px; }
+    .add-more-btn { background-color: #2e5cf2; color: white; border: 2px solid #f5b616; padding: 12px 24px; border-radius: 30px; font-weight: bold; cursor: pointer; text-decoration: none; text-align: center; }
+
+    .terms-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); display: flex; justify-content: center; align-items: center; z-index: 2000; }
+    .terms-box { background-color: #ffffff; border: 4px solid #2e5cf2; border-radius: 16px; padding: 30px; width: 100%; max-width: 450px; text-shadow: none; box-shadow: 0 4px 15px rgba(0,0,0,0.2); text-align: center;}
+    .terms-title { font-size: 20px; font-weight: bold; color: #2e5cf2; margin-bottom: 10px; }
+    .terms-content { height: 180px; overflow-y: scroll; border: 1px solid #CDD1C7; border-radius: 8px; padding: 10px; font-size: 13px; line-height: 1.5; background: #FFFDF073; text-align: left; margin-bottom: 15px; }
+    .checkbox-container { display: flex; align-items: center; gap: 10px; margin-bottom: 20px; font-size: 14px; font-weight: 600; }
+</style>
+<title>CommunityForge</title>
+</head>
+<body>
+
+<div class="navbar">
+    <div class="logo-container" onclick="navigatePage('index.html')">CommunityForge</div>
+    <div class="nav-links">
+      <span id="navGreeting" class="user-greeting" style="display: none;" onclick="openProfileEdit()"></span>
+      <button class="nav-btn" onclick="navigatePage('index.html')">Home</button>
+      <button class="nav-btn" onclick="navigatePage('tools.html')">Items</button>
+      <button class="nav-btn" onclick="navigatePage('skills.html')">Skill</button>
+      <button class="nav-btn" onclick="navigatePage('listing.html')">Listings</button>
+    </div>
+</div>
+<div class="layout-wrapper">
+    <div class="sidebar">
+      <h3 style="margin-top:0; color:#2e5cf2; border-bottom:2px solid #f5b616; padding-bottom:8px;">Saved Favorites</h3>
+      <div id="favoritesListContainer"><p style="font-size:13px; color:#888;">No saved items yet.</p></div>
+    </div>
+
+    <div class="main-content">
+        <h1>All Community Listings</h1>
+        <p class="subtitle">Browse both items and skills submitted by the community in one space.</p>
+        
+        <input type="text" id="searchBar" class="search-input-box" placeholder="Search listings..." oninput="filterListings()">
+        <div class="tool-list" id="displayDirectory"></div>
+
+        <div class="action-links">
+            <div class="add-more-btn" onclick="navigatePage('tools.html')">List an Item</div>
+            <div class="add-more-btn" onclick="navigatePage('skills.html')">List a Skill</div>
+        </div>
+    </div>
+</div>
+
+<div class="terms-overlay" id="termsModal" style="display: none;">
+  <div class="terms-box">
+    <div class="terms-title">CommunityForge Guidelines</div>
+    <div class="terms-content">
+      <strong>1. Respect and Safety:</strong> Treat items and community mentors with utmost care. You are responsible for returning items in their original condition.<br><br>
+      <strong>2. Liability Waiver:</strong> CommunityForge handles resource coordination indexing only. Borrowers and learners agree to look after their own safety when using tools or attending skill training sessions.<br><br>
+      <strong>3. No Cost Policy:</strong> Lending and mentoring options on this interface layer are entirely free of cost. Voluntary tokens of appreciation remain optional.
+    </div>
+    <div class="checkbox-container">
+      <input type="checkbox" id="agreeCheckbox">
+      <label for="agreeCheckbox">I agree to the Terms & Conditions</label>
+    </div>
+    <div class="add-more-btn" style="width:100%; border:none; padding:12px;" onclick="confirmTermsAndSend()">Done</div>
+  </div>
+</div>
+<script>
+  function navigatePage(url) { if (url) { window.location.href = url; } }
+
+  function getOrCreateUserId() {
+    var userId = localStorage.getItem('forgeUserId');
+    if (!userId) {
+      userId = 'user_' + Math.random().toString(36).substr(2, 9) + Date.now();
+      localStorage.setItem('forgeUserId', userId);
+    }
+    return userId;
+  }
+
+  var allListings = [];
+  var favoriteIds = [];
+  var activeBorrowIds = [];
+  var currentTargetId = null;
+
+  var BIN_ID = "654321fedcba9876543210fe"; 
+  var MASTER_KEY = "$2b$10$ExampleMasterKeyStringHere";
+
+  function loadListings() {
+    favoriteIds = JSON.parse(localStorage.getItem('communityForgeFavs')) || [];
+    activeBorrowIds = JSON.parse(localStorage.getItem('communityForgeActiveBorrows')) || [];
+    fetch('https://jsonbin.io' + BIN_ID + '/latest', {
+      method: 'GET',
+      headers: { 'X-Master-Key': MASTER_KEY }
+    })
+    .then(function(res) { return res.json(); })
+    .then(function(data) {
+      allListings = data.record || [];
+      renderListings(allListings);
+      renderFavorites();
+    })
+    .catch(function() {
+      allListings = JSON.parse(localStorage.getItem('communityForgeListings')) || [];
+      renderListings(allListings);
+      renderFavorites();
+    });
+  }
+
+  function syncToCloud(updatedList) {
+    localStorage.setItem('communityForgeListings', JSON.stringify(updatedList));
+    fetch('https://jsonbin.io' + BIN_ID, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Master-Key': MASTER_KEY
+      },
+      body: JSON.stringify(updatedList)
+    });
+  }
+
+  function renderListings(currentListings) {
+    var directory = document.getElementById('displayDirectory');
+    var currentUserId = getOrCreateUserId();
+    directory.innerHTML = "";
+
+    if (currentListings.length === 0) {
+      directory.innerHTML = "<p style='color: #666666;'>No listings yet. Go back to add something!</p>";
+      return;
+    }
+
+    currentListings.forEach(function(listing) {
+      var card = document.createElement('div');
+      card.className = 'tool-card';
+      var isFav = favoriteIds.includes(listing.id);
+      var isCurrentlyBorrowed = activeBorrowIds.includes(listing.id);
+      
+      var controlButtonHtml = "";
+      var viewsHtml = "";
+
+      if (listing.ownerId === currentUserId) {
+        controlButtonHtml = `<button class="delete-btn" onclick="deleteListing('${listing.id}')">Delete</button>`;
+        viewsHtml = `<div style="font-size: 12px; color: #2e5cf2; font-weight: bold; margin-bottom: 8px;"><span id="views-${listing.id}">Loading views...</span> views</div>`;
+      } else {
+        if (isCurrentlyBorrowed) {
+          var unactionText = (listing.type && listing.type.toLowerCase() === "skill") ? "Unlearn" : "Unborrow";
+          controlButtonHtml = `<button class="delete-btn" style="background-color: #f5b616; color: #1A3020; border-color: #2e5cf2;" onclick="executeUnborrow('${listing.id}')">${unactionText}</button>`;
+        } else {
+          var actionText = (listing.type && listing.type.toLowerCase() === "skill") ? "Learn" : "Borrow";
+          controlButtonHtml = `<button class="delete-btn" style="background-color: #2e5cf2; color: white; border-color: #f5b616;" onclick="openTerms('${listing.id}')">${actionText}</button>`;
+        }
+      }
+
+      card.innerHTML = `
+        <div class="tool-info">
+          <span class="tool-type">${listing.type || 'Item'}</span>
+          <h3>${listing.name} <span class="heart-icon" onclick="toggleFavorite('${listing.id}', event)">${isFav ? 'Saved' : 'Save'}</span></h3>
+          <p>${listing.desc}</p>
+          ${viewsHtml}
+          <div class="contact-details">
+            <div><strong>Listed by:</strong> ${listing.creatorName || 'A Neighbor'}</div>
+            <div><strong>Email:</strong> ${listing.email || 'Not provided'}</div>
+            <div><strong>Phone:</strong> ${listing.phone || 'Not provided'}</div>
+            <div><strong>Location:</strong> ${listing.address || 'Not provided'}</div>
+          </div>
+        </div>
+        ${controlButtonHtml}
+      `;
+      directory.appendChild(card);
+    });
+  }
+  function toggleFavorite(id, event) {
+    event.stopPropagation();
+    var idx = favoriteIds.indexOf(id);
+    if (idx > -1) { favoriteIds.splice(idx, 1); } else { favoriteIds.push(id); }
+    localStorage.setItem('communityForgeFavs', JSON.stringify(favoriteIds));
+    renderListings(allListings);
+    renderFavorites();
+  }
+
+  function renderFavorites() {
+    var favContainer = document.getElementById('favoritesListContainer');
+    favContainer.innerHTML = "";
+    var favItems = allListings.filter(item => favoriteIds.includes(item.id));
+
+    if (favItems.length === 0) {
+      favContainer.innerHTML = "<p style='font-size:13px; color:#888;'>No saved items yet.</p>";
+      return;
+    }
+
+    favItems.forEach(item => {
+      var div = document.createElement('div');
+      div.className = 'fav-sidebar-item';
+      div.innerHTML = `<span><strong>${item.name}</strong> (${item.type || 'Item'})</span> <span style="cursor:pointer;" onclick="toggleFavorite('${item.id}', event)">Remove</span>`;
+      favContainer.appendChild(div);
+    });
+  }
+
+  function filterListings() {
+    var filterText = document.getElementById('searchBar').value.toLowerCase();
+    var filtered = allListings.filter(function(listing) {
+      return (listing.name && listing.name.toLowerCase().includes(filterText)) || (listing.desc && listing.desc.toLowerCase().includes(filterText));
+    });
+    renderListings(filtered);
+  }
+
+  function deleteListing(id) {
+    var updated = allListings.filter(item => item.id !== id);
+    allListings = updated;
+    renderListings(allListings);
+    renderFavorites();
+    syncToCloud(allListings);
+  }
+
+  function openTerms(id) { currentTargetId = id; document.getElementById('agreeCheckbox').checked = false; document.getElementById('termsModal').style.display = 'flex'; }
+  
+  function confirmTermsAndSend() {
+    if (!document.getElementById('agreeCheckbox').checked) { alert("You must agree to terms!"); return; }
+    document.getElementById('termsModal').style.display = 'none';
+    
+    if (!activeBorrowIds.includes(currentTargetId)) {
+      activeBorrowIds.push(currentTargetId);
+      localStorage.setItem('communityForgeActiveBorrows', JSON.stringify(activeBorrowIds));
+    }
+    
+    executeBorrowEmail(currentTargetId);
+  }
+
+  function executeUnborrow(id) {
+    var idx = activeBorrowIds.indexOf(id);
+    if (idx > -1) {
+      activeBorrowIds.splice(idx, 1);
+      localStorage.setItem('communityForgeActiveBorrows', JSON.stringify(activeBorrowIds));
+    }
+    
+    var target = allListings.find(item => item.id === id);
+    if (!target) return;
+    
+    var borrowerName = localStorage.getItem('savedUsername') || "A Neighbor";
+    var unverb = (target.type && target.type.toLowerCase() === "skill") ? "completed learning" : "returned";
+    var subject = "CommunityForge Status Update: " + borrowerName + " has " + unverb + " your " + target.name;
+    var body = "Hello,\n\nThis is an automated notification that " + borrowerName + " has finished using or learning your listing '" + target.name + "' and it is now available for other neighbors to access again.\n\nBest regards,\nCommunityForge Automation";
+    
+    window.location.href = "mailto:" + target.email + "?subject=Approve&body=" + encodeURIComponent(body);
+    loadListings();
+  }
+
+  function executeBorrowEmail(id) {
+    var target = allListings.find(item => item.id === id);
+    if (!target) return;
+    var borrowerName = localStorage.getItem('savedUsername') || "A Neighbor";
+    var verb = (target.type && target.type.toLowerCase() === "skill") ? "teach" : "lend";
+    
+    var yesHref = "mailto:" + localStorage.getItem('savedEmail') + "?subject=Approved&body=Yes";
+    var noHref = "mailto:" + localStorage.getItem('savedEmail') + "?subject=Declined&body=No";
+
+    var body = "Request from " + borrowerName + " for " + target.name + "\n\nAccept:\n" + yesHref + "\n\nDecline:\n" + noHref;
+    window.location.href = "mailto:" + target.email + "?subject=Request&body=" + encodeURIComponent(body);
+    loadListings();
+  }
+
+  function openProfileEdit() {
+    var modal = document.createElement('div');
+    modal.className = 'terms-overlay';
+    modal.id = 'editProfileOverlay';
+    modal.innerHTML = `
+      <div class="terms-box" style="max-width: 400px;">
+        <div class="terms-title">Edit Profile</div>
+        <input type="text" id="editUsername" class="search-input-box" style="margin-bottom:12px;" placeholder="Name" value="${localStorage.getItem('savedUsername') || ''}">
+        <input type="email" id="editEmail" class="search-input-box" style="margin-bottom:12px;" placeholder="Email" value="${localStorage.getItem('savedEmail') || ''}">
+        <input type="tel" id="editPhone" class="search-input-box" style="margin-bottom:12px;" placeholder="Phone" value="${localStorage.getItem('savedPhone') || ''}">
+        <input type="text" id="editZip" class="search-input-box" style="margin-bottom:20px;" placeholder="Zip Code" value="${localStorage.getItem('savedZip') || ''}">
+        <div class="add-more-btn" style="width:100%; border:none; padding:12px; margin-bottom:10px;" onclick="saveProfileEdit()">Save</div>
+        <div class="add-more-btn" style="width:100%; border:none; padding:12px; background-color:#f5b616; color:#1A3020;" onclick="document.getElementById('editProfileOverlay').remove()">Cancel</div>
+      </div>
+    `;
+    document.body.appendChild(modal);
+  }
+
+  window.saveProfileEdit = function() {
+    var name = document.getElementById('editUsername').value;
+    if (!name.trim()) { alert("Name is required!"); return; }
+    localStorage.setItem('savedUsername', name);
+    localStorage.setItem('savedEmail', document.getElementById('editEmail').value);
+    localStorage.setItem('savedPhone', document.getElementById('editPhone').value);
+    localStorage.setItem('savedZip', document.getElementById('editZip').value);
+    document.getElementById('navGreeting').textContent = 'Hello, ' + name;
+    document.getElementById('editProfileOverlay').remove();
+  };
+
+  window.onload = function() {
+       loadListings();
+  };
+</script>
+</body>
+</html>
